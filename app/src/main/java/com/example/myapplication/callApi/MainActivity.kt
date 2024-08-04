@@ -1,5 +1,6 @@
 package com.example.myapplication.callApi
 
+import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
@@ -87,6 +88,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("CheckResult")
     fun fetchData() {
         val apiService = ApiClient.apiService
 
@@ -108,24 +110,26 @@ class MainActivity : AppCompatActivity() {
             apiC24Search,
             apiOriginal,
             apiTranslation,
-            apiNameAllah,
-            { C22Quran,
-              C22ListQuran,
-              C26Translate,
-              C26ListTranslate,
-              C24Search,
-              Original,
-              Translation,
-              NameAllah ->
-                Octuple(C22Quran,
-                    C22ListQuran,
-                    C26Translate,
-                    C26ListTranslate,
-                    C24Search,
-                    Original,
-                    Translation,
-                    NameAllah)
-            })
+            apiNameAllah
+        ) { C22Quran,
+            C22ListQuran,
+            C26Translate,
+            C26ListTranslate,
+            C24Search,
+            Original,
+            Translation,
+            NameAllah ->
+            Octuple(
+                C22Quran,
+                C22ListQuran,
+                C26Translate,
+                C26ListTranslate,
+                C24Search,
+                Original,
+                Translation,
+                NameAllah
+            )
+        }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
                 progressDialog.dismiss()
