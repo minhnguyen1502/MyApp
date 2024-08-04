@@ -28,6 +28,7 @@ class C26ListTranslateActivity : AppCompatActivity() {
 //        callApi()
     }
 
+
 //    fun callApi(){
 //        val apiService = ApiClient.retrofit.create(APIService::class.java)
 //        val call = apiService.getC26List()

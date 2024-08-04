@@ -11,11 +11,13 @@ import com.example.myapplication.R
 import com.example.myapplication.callApi.model.C22.C22Quran
 import com.example.myapplication.callApi.service.APIService
 import com.example.myapplication.callApi.service.ApiClient
+import com.google.gson.Gson
 
 class C22QuranActivity : AppCompatActivity() {
 
     private lateinit var tvQuranResponse: TextView
     private lateinit var back: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_c22_quran)
@@ -25,8 +27,27 @@ class C22QuranActivity : AppCompatActivity() {
         back.setOnClickListener{
             finish()
         }
+//        val jsonC22Quran = intent.getStringExtra("C22_QURAN_DATA")
+//        val gson = Gson()
+//        val c22QuranData = gson.fromJson(jsonC22Quran, C22Quran::class.java)
+//
+//        // Display the data
+//        displayC22QuranData(c22QuranData)
 //        callApi()
     }
+//    private fun displayC22QuranData(data: C22Quran) {
+//        val builder = StringBuilder()
+//        builder.append("Code: ${data.code}\n")
+//        builder.append("Status: ${data.status}\n")
+//        builder.append("Edition: ${data.data.edition.name}\n")
+//        builder.append("Surahs:\n")
+//
+//        data.data.surahs.forEach { surah ->
+//            builder.append("  - ${surah.name} (${surah.englishName})\n")
+//        }
+//
+//        tvQuranResponse.text = builder.toString()
+//    }
 //    fun callApi(){
 //        val apiService = ApiClient.retrofit.create(APIService::class.java)
 //        val call = apiService.getC22()

@@ -1,5 +1,6 @@
 package com.example.myapplication.callApi.model.C22
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class C22Quran(
@@ -10,8 +11,4 @@ data class C22Quran(
     @SerializedName("data")
     val data: C22DataQuran
 
-) {
-    override fun toString(): String {
-        return "C22Quran(code=$code, status='$status', data=$data)"
-    }
-}
+)

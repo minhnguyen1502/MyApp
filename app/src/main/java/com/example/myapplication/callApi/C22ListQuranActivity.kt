@@ -9,6 +9,7 @@ import com.example.myapplication.callApi.model.C22.C22Quran
 import com.example.myapplication.callApi.model.C22List.C22ListQuran
 import com.example.myapplication.callApi.service.APIService
 import com.example.myapplication.callApi.service.ApiClient
+import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +33,6 @@ class C22ListQuranActivity : AppCompatActivity() {
 //    fun callApi() {
 //        val apiService = ApiClient.retrofit.create(APIService::class.java)
 //        val call = apiService.getC22List()
-//
 //        call.enqueue(object : Callback<C22ListQuran> {
 //            override fun onResponse(
 //                call: Call<C22ListQuran>, response: Response<C22ListQuran>
