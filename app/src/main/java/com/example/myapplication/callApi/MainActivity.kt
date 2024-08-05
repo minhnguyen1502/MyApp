@@ -50,9 +50,6 @@ class MainActivity : AppCompatActivity() {
         //20s
         tvC22Quran.setOnClickListener {
             val intent = Intent(this, C22QuranActivity::class.java)
-//            val gson = Gson()
-//            val jsonC22Quran = gson.toJson(c22QuranData) // Serialize the data
-//            intent.putExtra("C22_QURAN_DATA", jsonC22Quran)
             startActivity(intent)
         }
         //5s
@@ -84,76 +81,76 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, NameAllahActivity::class.java))
         }
 
-        fetchData()
+//        fetchData()
     }
 
-
-    @SuppressLint("CheckResult")
-    fun fetchData() {
-        val apiService = ApiClient.apiService
-
-        val apiC22Quran = apiService.getC22().subscribeOn(Schedulers.io())
-        val apiC22ListQuran = apiService.getC22List().subscribeOn(Schedulers.io())
-        val apiC26Translate = apiService.getC26().subscribeOn(Schedulers.io())
-        val apiC26ListTranslate = apiService.getC26List().subscribeOn(Schedulers.io())
-        val apiC24Search = apiService.getC24().subscribeOn(Schedulers.io())
-        val apiNameAllah = apiService.getNameAllah().subscribeOn(Schedulers.io())
-        val apiTranslation = apiService.getTranslation().subscribeOn(Schedulers.io())
-        val apiOriginal = apiService.getOriginal().subscribeOn(Schedulers.io())
-
-        progressDialog.show()
-
-        Single.zip(apiC22Quran,
-            apiC22ListQuran,
-            apiC26Translate,
-            apiC26ListTranslate,
-            apiC24Search,
-            apiOriginal,
-            apiTranslation,
-            apiNameAllah
-        ) { C22Quran,
-            C22ListQuran,
-            C26Translate,
-            C26ListTranslate,
-            C24Search,
-            Original,
-            Translation,
-            NameAllah ->
-            Octuple(
-                C22Quran,
-                C22ListQuran,
-                C26Translate,
-                C26ListTranslate,
-                C24Search,
-                Original,
-                Translation,
-                NameAllah
-            )
-        }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ result ->
-                progressDialog.dismiss()
-                val(C22Quran,
-                    C22ListQuran,
-                    C26Translate,
-                    C26ListTranslate,
-                    C24Search,
-                    Original,
-                    Translation,
-                    NameAllah) = result
-                Log.d("API_RESPONSE", "C22Quran: ${C22Quran.toString()}")
-                Log.d("API_RESPONSE", "C22ListQuran: ${C22ListQuran.toString()}")
-                Log.d("API_RESPONSE", "C26Translate: ${C26Translate.toString()}")
-                Log.d("API_RESPONSE", "C26ListTranslate: ${C26ListTranslate.toString()}")
-                Log.d("API_RESPONSE", "C24Search: ${C24Search.toString()}")
-                Log.d("API_RESPONSE", "Original: ${Original.toString()}")
-                Log.d("API_RESPONSE", "Translation: ${Translation.toString()}")
-                Log.d("API_RESPONSE", "NameAllah: ${NameAllah.toString()}")
-            },{error ->
-                progressDialog.dismiss()
-                error.printStackTrace()
-
-            })
-    }
+//
+//    @SuppressLint("CheckResult")
+//    fun fetchData() {
+//        val apiService = ApiClient.apiService
+//
+//        val apiC22Quran = apiService.getC22().subscribeOn(Schedulers.io())
+//        val apiC22ListQuran = apiService.getC22List().subscribeOn(Schedulers.io())
+//        val apiC26Translate = apiService.getC26().subscribeOn(Schedulers.io())
+//        val apiC26ListTranslate = apiService.getC26List().subscribeOn(Schedulers.io())
+//        val apiC24Search = apiService.getC24().subscribeOn(Schedulers.io())
+//        val apiNameAllah = apiService.getNameAllah().subscribeOn(Schedulers.io())
+//        val apiTranslation = apiService.getTranslation().subscribeOn(Schedulers.io())
+//        val apiOriginal = apiService.getOriginal().subscribeOn(Schedulers.io())
+//
+//        progressDialog.show()
+//
+//        Single.zip(apiC22Quran,
+//            apiC22ListQuran,
+//            apiC26Translate,
+//            apiC26ListTranslate,
+//            apiC24Search,
+//            apiOriginal,
+//            apiTranslation,
+//            apiNameAllah
+//        ) { C22Quran,
+//            C22ListQuran,
+//            C26Translate,
+//            C26ListTranslate,
+//            C24Search,
+//            Original,
+//            Translation,
+//            NameAllah ->
+//            Octuple(
+//                C22Quran,
+//                C22ListQuran,
+//                C26Translate,
+//                C26ListTranslate,
+//                C24Search,
+//                Original,
+//                Translation,
+//                NameAllah
+//            )
+//        }
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({ result ->
+//                progressDialog.dismiss()
+//                val(C22Quran,
+//                    C22ListQuran,
+//                    C26Translate,
+//                    C26ListTranslate,
+//                    C24Search,
+//                    Original,
+//                    Translation,
+//                    NameAllah) = result
+//                Log.d("API_RESPONSE", "C22Quran: ${C22Quran.toString()}")
+//                Log.d("API_RESPONSE", "C22ListQuran: ${C22ListQuran.toString()}")
+//                Log.d("API_RESPONSE", "C26Translate: ${C26Translate.toString()}")
+//                Log.d("API_RESPONSE", "C26ListTranslate: ${C26ListTranslate.toString()}")
+//                Log.d("API_RESPONSE", "C24Search: ${C24Search.toString()}")
+//                Log.d("API_RESPONSE", "Original: ${Original.toString()}")
+//                Log.d("API_RESPONSE", "Translation: ${Translation.toString()}")
+//                Log.d("API_RESPONSE", "NameAllah: ${NameAllah.toString()}")
+//            },{error ->
+//                progressDialog.dismiss()
+//                error.printStackTrace()
+//
+//            })
+//    }
 
 }
