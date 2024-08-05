@@ -37,7 +37,29 @@ interface APIService {
 
     @GET("quran/en.asad")
     fun getTranslation(): Observable<Translation>
-
+//    @GET("quran/ar.alafasy")
+//    fun getC22(): Single<C22Quran>
+//
+//    @GET("meta")
+//    fun getC22List(): Single<C22ListQuran>
+//
+//    @GET("edition/language")
+//    fun getC26List(): Single<C26ListTranslate>
+//
+//    @GET("edition/type/translation")
+//    fun getC26(): Single<C26Translate>
+//
+//    @GET("search/Abraham/all/en")
+//    fun getC24(): Single<C24Search>
+//
+//    @GET("https://api.aladhan.com/v1/asmaAlHusna")
+//    fun getNameAllah(): Single<NameAllah>
+//
+//    @GET("quran/quran-uthmani")
+//    fun getOriginal(): Single<Original>
+//
+//    @GET("quran/en.asad")
+//    fun getTranslation(): Single<Translation>
 //    @GET("quran/ar.alafasy")
 //    fun getC22(): Call<C22Quran>
 //
