@@ -1,31 +1,39 @@
 package com.example.myapplication.callApi
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 import com.example.myapplication.callApi.model.C22.C22Quran
-import com.example.myapplication.callApi.service.APIService
 import com.example.myapplication.callApi.service.ApiClient
 import com.google.gson.Gson
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class C22QuranActivity : AppCompatActivity() {
 
     private lateinit var tvQuranResponse: TextView
     private lateinit var back: TextView
 
+    private val compositeDisposable = CompositeDisposable()
+    private lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_c22_quran)
+        setContentView(R.layout.activity_call_api)
         tvQuranResponse = findViewById(R.id.tvQuranResponse)
         back = findViewById(R.id.back)
 
         back.setOnClickListener{
             finish()
+        }
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Loading...")
+            setCancelable(false)
+            show()
         }
 //        val jsonC22Quran = intent.getStringExtra("C22_QURAN_DATA")
 //        val gson = Gson()
@@ -33,7 +41,36 @@ class C22QuranActivity : AppCompatActivity() {
 //
 //        // Display the data
 //        displayC22QuranData(c22QuranData)
-//        callApi()
+        callApi()
+    }
+
+    private fun callApi() {
+        val disposable = ApiClient.apiService.getC22().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({ response: C22Quran ->
+                val jsonResponse = Gson().toJson(response)
+                Log.e("API", "C22 Quran: $jsonResponse")
+                progressDialog.dismiss()
+                tvQuranResponse.text = "done"
+
+            }, { throwable: Throwable ->
+                progressDialog.dismiss()
+                tvQuranResponse.text = "error"
+
+                Toast.makeText(
+                    this,
+                    "Failed to fetch data: ${throwable.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            })
+        compositeDisposable.add(disposable)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+        if (::progressDialog.isInitialized && progressDialog.isShowing) {
+            progressDialog.dismiss()
+        }
     }
 //    private fun displayC22QuranData(data: C22Quran) {
 //        val builder = StringBuilder()
