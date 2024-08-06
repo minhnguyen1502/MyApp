@@ -1,6 +1,6 @@
 package com.example.myapplication.callApi.model
 
-data class Octuple<A, B, C, D, E, F, G, H>(
+data class Octuple<A, B, C, D, E, F, G, H,J>(
     val first: A,
     val second: B,
     val third: C,
@@ -8,5 +8,6 @@ data class Octuple<A, B, C, D, E, F, G, H>(
     val fifth: E,
     val sixth: F,
     val seventh: G,
-    val eighth: H
+    val eighth: H,
+    val nine: J
 )

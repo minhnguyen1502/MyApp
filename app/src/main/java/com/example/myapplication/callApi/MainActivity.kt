@@ -92,64 +92,55 @@ class MainActivity : AppCompatActivity() {
         val startTimes = mutableMapOf<String, Long>()
         val endTimes = mutableMapOf<String, Long>()
 
-        val apiC22Quran = apiService.getC22()
-            .subscribeOn(Schedulers.io())
+        val apiC22Quran = apiService.getC22().subscribeOn(Schedulers.io())
             .doOnSubscribe { startTimes["C22Quran"] = System.currentTimeMillis() }
             .doOnNext { endTimes["C22Quran"] = System.currentTimeMillis() }
 
-        val apiC22ListQuran = apiService.getC22List()
-            .subscribeOn(Schedulers.io())
+        val apiC22ListQuran = apiService.getC22List().subscribeOn(Schedulers.io())
             .doOnSubscribe { startTimes["C22ListQuran"] = System.currentTimeMillis() }
             .doOnNext { endTimes["C22ListQuran"] = System.currentTimeMillis() }
 
-        val apiC26Translate = apiService.getC26()
-            .subscribeOn(Schedulers.io())
+        val apiC26Translate = apiService.getC26().subscribeOn(Schedulers.io())
             .doOnSubscribe { startTimes["C26Translate"] = System.currentTimeMillis() }
             .doOnNext { endTimes["C26Translate"] = System.currentTimeMillis() }
 
-        val apiC26ListTranslate = apiService.getC26List()
-            .subscribeOn(Schedulers.io())
+        val apiC26ListTranslate = apiService.getC26List().subscribeOn(Schedulers.io())
             .doOnSubscribe { startTimes["C26ListTranslate"] = System.currentTimeMillis() }
             .doOnNext { endTimes["C26ListTranslate"] = System.currentTimeMillis() }
 
-        val apiC24Search = apiService.getC24()
-            .subscribeOn(Schedulers.io())
+        val apiC24Search = apiService.getC24().subscribeOn(Schedulers.io())
             .doOnSubscribe { startTimes["C24Search"] = System.currentTimeMillis() }
             .doOnNext { endTimes["C24Search"] = System.currentTimeMillis() }
 
-        val apiNameAllah = apiService.getNameAllah()
-            .subscribeOn(Schedulers.io())
+        val apiNameAllah = apiService.getNameAllah().subscribeOn(Schedulers.io())
             .doOnSubscribe { startTimes["NameAllah"] = System.currentTimeMillis() }
             .doOnNext { endTimes["NameAllah"] = System.currentTimeMillis() }
 
-        val apiTranslation = apiService.getTranslation()
-            .subscribeOn(Schedulers.io())
+        val apiTranslation = apiService.getTranslation().subscribeOn(Schedulers.io())
             .doOnSubscribe { startTimes["Translation"] = System.currentTimeMillis() }
             .doOnNext { endTimes["Translation"] = System.currentTimeMillis() }
 
-        val apiOriginal = apiService.getOriginal()
-            .subscribeOn(Schedulers.io())
+        val apiOriginal = apiService.getOriginal().subscribeOn(Schedulers.io())
             .doOnSubscribe { startTimes["Original"] = System.currentTimeMillis() }
             .doOnNext { endTimes["Original"] = System.currentTimeMillis() }
 
+        val apiC22JuzList = apiService.getC22Juz(9, 5).subscribeOn(Schedulers.io())
+            .doOnSubscribe { startTimes["C22JuzList"] = System.currentTimeMillis() }
+            .doOnNext { endTimes["C22JuzList"] = System.currentTimeMillis() }
+
         progressDialog.show()
 
-        Observable.zip(apiC22Quran,
+        Observable.zip(
+            apiC22Quran,
             apiC22ListQuran,
             apiC26Translate,
             apiC26ListTranslate,
             apiC24Search,
             apiOriginal,
             apiTranslation,
-            apiNameAllah
-        ) { C22Quran,
-            C22ListQuran,
-            C26Translate,
-            C26ListTranslate,
-            C24Search,
-            Original,
-            Translation,
-            NameAllah ->
+            apiNameAllah,
+            apiC22JuzList
+        ) { C22Quran, C22ListQuran, C26Translate, C26ListTranslate, C24Search, Original, Translation, NameAllah, C22JuzList ->
             Octuple(
                 C22Quran,
                 C22ListQuran,
@@ -158,44 +149,59 @@ class MainActivity : AppCompatActivity() {
                 C24Search,
                 Original,
                 Translation,
-                NameAllah
+                NameAllah,
+                C22JuzList
             )
-        }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ result ->
-                progressDialog.dismiss()
-                val(C22Quran,
-                    C22ListQuran,
-                    C26Translate,
-                    C26ListTranslate,
-                    C24Search,
-                    Original,
-                    Translation,
-                    NameAllah) = result
+        }.observeOn(AndroidSchedulers.mainThread()).subscribe({ result ->
+            progressDialog.dismiss()
+            val (C22Quran, C22ListQuran, C26Translate, C26ListTranslate, C24Search, Original, Translation, NameAllah, C22JuzList) = result
 
-                logApiCallDuration("C22Quran", startTimes, endTimes)
-                logApiCallDuration("C22ListQuran", startTimes, endTimes)
-                logApiCallDuration("C26Translate", startTimes, endTimes)
-                logApiCallDuration("C26ListTranslate", startTimes, endTimes)
-                logApiCallDuration("C24Search", startTimes, endTimes)
-                logApiCallDuration("Original", startTimes, endTimes)
-                logApiCallDuration("Translation", startTimes, endTimes)
-                logApiCallDuration("NameAllah", startTimes, endTimes)
+            logApiCallDuration("C22Quran", startTimes, endTimes)
+            logApiCallDuration("C22ListQuran", startTimes, endTimes)
+            logApiCallDuration("C26Translate", startTimes, endTimes)
+            logApiCallDuration("C26ListTranslate", startTimes, endTimes)
+            logApiCallDuration("C24Search", startTimes, endTimes)
+            logApiCallDuration("Original", startTimes, endTimes)
+            logApiCallDuration("Translation", startTimes, endTimes)
+            logApiCallDuration("NameAllah", startTimes, endTimes)
+            logApiCallDuration("C22JuzList", startTimes, endTimes)
 
-                Log.d("API_RESPONSE", "C22Quran: ${C22Quran.toString()}") //lần 1: 32922- lần 2:44388 ms
-                Log.d("API_RESPONSE", "C22ListQuran: ${C22ListQuran.toString()}") //lần 1:2069-lần 2:2027 ms
-                Log.d("API_RESPONSE", "C26Translate: ${C26Translate.toString()}") //lần 1:45505-lần 2:20720 ms
-                Log.d("API_RESPONSE", "C26ListTranslate: ${C26ListTranslate.toString()}") //lần 1:26303-lần 2:2005 ms
-                Log.d("API_RESPONSE", "C24Search: ${C24Search.toString()}") //lần 1:34969-lần 2:5351 ms
-                Log.d("API_RESPONSE", "Original: ${Original.toString()}") //lần 1:63224-lần 2:22552 ms
-                Log.d("API_RESPONSE", "Translation: ${Translation.toString()}") //lần 1:45111-lần 2:53170 ms
-                Log.d("API_RESPONSE", "NameAllah: ${NameAllah.toString()}") //lần 1:2030-lần 2:1693 ms
-            },{error ->
-                progressDialog.dismiss()
-                error.printStackTrace()
-            })
+            Log.d(
+                "API_RESPONSE", "C22Quran: $C22Quran"
+            ) //lần 1: 32922- lần 2:44388 ms
+            Log.d(
+                "API_RESPONSE", "C22ListQuran: $C22ListQuran"
+            ) //lần 1:2069-lần 2:2027 ms
+            Log.d(
+                "API_RESPONSE", "C26Translate: $C26Translate"
+            ) //lần 1:45505-lần 2:20720 ms
+            Log.d(
+                "API_RESPONSE", "C26ListTranslate: $C26ListTranslate"
+            ) //lần 1:26303-lần 2:2005 ms
+            Log.d(
+                "API_RESPONSE", "C24Search: $C24Search"
+            ) //lần 1:34969-lần 2:5351 ms
+            Log.d(
+                "API_RESPONSE", "Original: $Original"
+            ) //lần 1:63224-lần 2:22552 ms
+            Log.d(
+                "API_RESPONSE", "Translation: $Translation"
+            ) //lần 1:45111-lần 2:53170 ms
+            Log.d(
+                "API_RESPONSE", "NameAllah: $NameAllah"
+            ) //lần 1:2030-lần 2:1693 ms
+            Log.d(
+                "API_RESPONSE", "C22JuzList: $C22JuzList"
+            ) //lần 1:2030-lần 2:1693 ms
+        }, { error ->
+            progressDialog.dismiss()
+            error.printStackTrace()
+        })
     }
-    private fun logApiCallDuration(apiName: String, startTimes: Map<String, Long>, endTimes: Map<String, Long>) {
+
+    private fun logApiCallDuration(
+        apiName: String, startTimes: Map<String, Long>, endTimes: Map<String, Long>
+    ) {
         val startTime = startTimes[apiName]
         val endTime = endTimes[apiName]
         if (startTime != null && endTime != null) {

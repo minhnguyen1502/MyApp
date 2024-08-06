@@ -33,28 +33,28 @@ class OrigenalActivity : AppCompatActivity() {
         back.setOnClickListener {
             finish()
         }
-        callApi()
+//        callApi()
     }
-    private fun callApi() {
-        val disposable = ApiClient.apiService.getOriginal().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe({ response: Original ->
-                val jsonResponse = Gson().toJson(response)
-                Log.e("API", "Original: $jsonResponse")
-                progressDialog.dismiss()
-                tvQuranResponse.text = "done"
-
-            }, { throwable: Throwable ->
-                progressDialog.dismiss()
-                tvQuranResponse.text = "error"
-
-                Toast.makeText(
-                    this,
-                    "Failed to fetch data: ${throwable.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            })
-        compositeDisposable.add(disposable)
-    }
+//    private fun callApi() {
+//        val disposable = ApiClient.apiService.getOriginal().subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread()).subscribe({ response: Original ->
+//                val jsonResponse = Gson().toJson(response)
+//                Log.e("API", "Original: $jsonResponse")
+//                progressDialog.dismiss()
+//                tvQuranResponse.text = "done"
+//
+//            }, { throwable: Throwable ->
+//                progressDialog.dismiss()
+//                tvQuranResponse.text = "error"
+//
+//                Toast.makeText(
+//                    this,
+//                    "Failed to fetch data: ${throwable.message}",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            })
+//        compositeDisposable.add(disposable)
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
